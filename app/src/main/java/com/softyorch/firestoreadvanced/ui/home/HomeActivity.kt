@@ -27,6 +27,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initUi() {
+        initListeners()
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
@@ -34,6 +35,14 @@ class HomeActivity : AppCompatActivity() {
                     renderTopProducts(state.topProducts)
                     renderProducts(state.products)
                 }
+            }
+        }
+    }
+
+    private fun initListeners() {
+        binding.apply {
+            viewToolbar.tvAddProduct.setOnClickListener {
+
             }
         }
     }
