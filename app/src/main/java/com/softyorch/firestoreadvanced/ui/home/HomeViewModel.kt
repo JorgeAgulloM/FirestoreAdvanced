@@ -3,6 +3,7 @@ package com.softyorch.firestoreadvanced.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.softyorch.firestoreadvanced.data.network.DatabaseService
+import com.softyorch.firestoreadvanced.domain.model.Product
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,8 +33,19 @@ class HomeViewModel @Inject constructor(private val repository: DatabaseService)
             val response = withContext(Dispatchers.IO) {
                 repository.getAllProducts()
             }
-
             _uiState.update { it.copy(products = response) }
+            getTopProducts(response)
+        }
+    }
+
+    private fun getTopProducts(products: List<Product>) {
+        viewModelScope.launch {
+            val response = withContext(Dispatchers.IO) {
+                repository.getTopProducts()
+            }
+
+            val topProducts = products.filter { response.contains(it.id) }
+            _uiState.update { it.copy(topProducts = topProducts) }
         }
     }
 
