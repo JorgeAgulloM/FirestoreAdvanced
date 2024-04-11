@@ -7,12 +7,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.softyorch.firestoreadvanced.R
 import com.softyorch.firestoreadvanced.databinding.ActivityHomeBinding
 import com.softyorch.firestoreadvanced.domain.model.Product
 import com.softyorch.firestoreadvanced.ui.home.adapter.ProductsAdapter
 import com.softyorch.firestoreadvanced.ui.home.adapter.SpacingDecorator
+import com.softyorch.firestoreadvanced.ui.home.adapter.TopProductsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -22,6 +24,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var viewModel: HomeViewModel
     private lateinit var productsAdapter: ProductsAdapter
+    private lateinit var topProductsAdapter: TopProductsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +55,13 @@ class HomeActivity : AppCompatActivity() {
             addItemDecoration(SpacingDecorator(16))
             adapter = productsAdapter
         }
+
+        topProductsAdapter = TopProductsAdapter()
+        binding.rvTopProducts.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            addItemDecoration(SpacingDecorator(16))
+            adapter = topProductsAdapter
+        }
     }
 
     private fun initListeners() {
@@ -77,7 +87,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun renderTopProducts(topProducts: List<Product>) {
-
+        topProductsAdapter.updateList(topProducts)
     }
 
     private fun renderProducts(products: List<Product>) {
