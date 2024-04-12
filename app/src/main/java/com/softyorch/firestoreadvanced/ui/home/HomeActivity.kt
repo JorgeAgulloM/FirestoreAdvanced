@@ -1,7 +1,9 @@
 package com.softyorch.firestoreadvanced.ui.home
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.softyorch.firestoreadvanced.R
 import com.softyorch.firestoreadvanced.databinding.ActivityHomeBinding
 import com.softyorch.firestoreadvanced.domain.model.Product
+import com.softyorch.firestoreadvanced.ui.addProduct.AddProductActivity
 import com.softyorch.firestoreadvanced.ui.home.adapter.ProductsAdapter
 import com.softyorch.firestoreadvanced.ui.home.adapter.SpacingDecorator
 import com.softyorch.firestoreadvanced.ui.home.adapter.TopProductsAdapter
@@ -26,6 +29,14 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var viewModel: HomeViewModel
     private lateinit var productsAdapter: ProductsAdapter
     private lateinit var topProductsAdapter: TopProductsAdapter
+
+    private val addProductLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            viewModel.reloadData()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +87,7 @@ class HomeActivity : AppCompatActivity() {
     private fun initListeners() {
         binding.apply {
             viewToolbar.tvAddProduct.setOnClickListener {
-
+                addProductLauncher.launch(AddProductActivity.create(this@HomeActivity))
             }
         }
     }
