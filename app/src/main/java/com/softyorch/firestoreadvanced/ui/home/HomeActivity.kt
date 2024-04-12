@@ -51,7 +51,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initShimmers() {
-        binding.viewLastProductShimmer.root.startShimmer()
+        binding.apply {
+            viewLastProductShimmer.root.startShimmer()
+            rvTopProductsShimmer.startShimmer()
+        }
     }
 
     private fun initList() {
@@ -97,7 +100,12 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun renderTopProducts(topProducts: List<Product>) {
+        if (topProducts.isEmpty()) return
         topProductsAdapter.updateList(topProducts)
+        binding.rvTopProductsShimmer.apply {
+            isVisible = false
+            stopShimmer()
+        }
     }
 
     private fun renderProducts(products: List<Product>) {
