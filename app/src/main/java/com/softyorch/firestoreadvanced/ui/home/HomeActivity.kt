@@ -2,6 +2,7 @@ package com.softyorch.firestoreadvanced.ui.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -35,6 +36,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initUi() {
+        initShimmers()
         initListeners()
         initList()
         lifecycleScope.launch {
@@ -46,6 +48,10 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun initShimmers() {
+        binding.viewLastProductShimmer.root.startShimmer()
     }
 
     private fun initList() {
@@ -74,15 +80,19 @@ class HomeActivity : AppCompatActivity() {
 
     private fun renderLastProduct(lastProduct: Product?) {
         if (lastProduct == null) return
-        binding.viewLastProduct.apply {
-            lastProduct.apply {
-                tvTitle.text = title
-                tvDescription.text = description
-                Glide.with(this@HomeActivity)
-                    .load(imageUrl)
-                    .placeholder(R.drawable.ic_place_holder)
-                    .into(ivLastProduct)
+        binding.apply {
+            viewLastProduct.apply {
+                lastProduct.apply {
+                    tvTitle.text = title
+                    tvDescription.text = description
+                    Glide.with(this@HomeActivity)
+                        .load(imageUrl)
+                        .placeholder(R.drawable.ic_place_holder)
+                        .into(ivLastProduct)
+                }
+                root.isVisible = true
             }
+            viewLastProductShimmer.root.stopShimmer()
         }
     }
 
