@@ -23,6 +23,10 @@ class HomeViewModel @Inject constructor(private val repository: DatabaseService)
         getData()
     }
 
+    fun reloadData() {
+        getData()
+    }
+
     private fun getData() {
         getLastProduct()
         getAllProducts()
