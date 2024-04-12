@@ -43,6 +43,8 @@ android {
 
 dependencies {
 
+    // Shimmer effect
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
